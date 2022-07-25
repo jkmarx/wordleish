@@ -28,11 +28,10 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 });
 
 function seedDatabase() {
-  // parse file list
+  // parse and seed word list in database
   fs.readFile("wordList.txt", function (err, data) {
     if (err) throw err;
     const wordArr = data.toString().split("\n");
-    const currentDate = new Date();
     for (let i = 0; i < wordArr.length; i += 1) {
       const insert = "INSERT INTO wordList (name) VALUES (?)";
       db.run(insert, [wordArr[i]]);
