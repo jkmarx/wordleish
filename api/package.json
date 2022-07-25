@@ -5,7 +5,8 @@
   "requires": true,
   "scripts": {
     "start": "node server.js",
-    "test": "echo 'Error: no test specified' && exit 1"
+    "test": "echo 'Error: no test specified' && exit 1",
+    "format": "npx prettier --write ."
   },
   "dependencies": {
     "cors": "^2.8.5",
