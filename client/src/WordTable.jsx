@@ -5,27 +5,29 @@ export default function WordTable(props) {
   const { game, solution, updateSessionState } = props;
   const [selectRow, setSelectRow] = useState("");
   const [rows, setRows] = useState(game.boardState);
+  const solutionMap = {}; // used for tracking solution letter count
+  for (let j = 0; j < solution.length; j += 1) {
+    if (solutionMap.hasOwnProperty(solution[j])) {
+      solutionMap[solution[j]] += 1;
+    } else {
+      solutionMap[solution[j]] = 1;
+    }
+  }
 
+  // View method triggered by enter key which checks each complete row against a solution.
   function handleSubmit(event) {
     if (selectRow.length < 5) {
       return;
     }
-    const tempArr = [
+    const updatedRows = [
       ...rows.slice(0, game.rowIndex),
       selectRow,
       ...rows.slice(game.rowIndex + 1, rows.length),
     ];
-    setRows(tempArr);
-    const solutionMap = {};
-    for (let j = 0; j < solution.length; j += 1) {
-      if (solutionMap.hasOwnProperty(solution[j])) {
-        solutionMap[solution[j]] += 1;
-      } else {
-        solutionMap[solution[j]] = 1;
-      }
-    }
+    setRows(updatedRows);
+
     const evaluation = []; // ["absent", "present", "absent", "absent", "correct"]
-    let correctCount = 0;
+    let correctCount = 0; // five correct letters = win
     for (let i = 0; i < solution.length; i += 1) {
       if (selectRow[i] === solution[i]) {
         evaluation[i] = "correct";
@@ -54,7 +56,7 @@ export default function WordTable(props) {
     }
     updateSessionState(updatedSession);
 
-    // Start on the next row
+    // Manually move focus to the start of the next row
     if (game.rowIndex < 5) {
       const nextInputBox = document.querySelector(
         `input[name=box-input-0-${game.rowIndex + 1}]`
@@ -64,9 +66,10 @@ export default function WordTable(props) {
       }
     }
 
-    event.preventDefault();
+    event.preventDefault(); // avoid refresh
   }
 
+  // View method to generate DOM wordle table
   function generateGrid() {
     const rowDom = [];
     for (let i = 0; i < rows.length; i += 1) {
@@ -75,7 +78,7 @@ export default function WordTable(props) {
           word={rows[i]}
           evaluation={game.evaluations[i]}
           key={`${i}-${rows[i]}`}
-          rowIndex={i}
+          rowCount={i}
           setSelectRow={setSelectRow}
           disabled={i !== game.rowIndex || game.gameStatus !== "IN_PROGRESS"}
         />
@@ -84,6 +87,7 @@ export default function WordTable(props) {
     return rowDom;
   }
 
+  // Helper method use to submit row guesses when hitting enter
   function handleKeyUp(event) {
     if (event.keyCode === 13) {
       handleSubmit(event);

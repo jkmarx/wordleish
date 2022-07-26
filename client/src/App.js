@@ -5,7 +5,8 @@ import "./styles.css";
 const App = () => {
   const [gameSession, setGameSession] = useState({});
 
-  function updateWindowSession(todaysSolution) {
+  // Helper method to initially retrieve and sync browser window session with solution
+  function syncWindowSession(todaysSolution) {
     let initGameSession = {
       boardState: ["", "", "", "", "", ""],
       evaluations: [null, null, null, null, null, null],
@@ -27,12 +28,14 @@ const App = () => {
     setGameSession(initGameSession);
   }
 
+  // Helper method to update game state and update browser session.
   function updateSessionState(updatedSession) {
     const mergeSessions = { ...gameSession, ...updatedSession };
     window.localStorage.setItem("wordleish", JSON.stringify(mergeSessions));
     setGameSession(mergeSessions);
   }
 
+  // View method to display end game message.
   function getGameResults() {
     if (gameSession.gameStatus === "WON") {
       return <div className="results">Congrats! You've won today.</div>;
@@ -48,7 +51,7 @@ const App = () => {
       .then((res) => res.json())
       .then(
         (result) => {
-          updateWindowSession(result.data);
+          syncWindowSession(result.data);
         },
         (error) => {
           console.error(error);

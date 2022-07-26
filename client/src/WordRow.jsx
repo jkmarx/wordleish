@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 export default function WordRow(props) {
-  const { word, evaluation, rowIndex, setSelectRow, disabled } = props;
+  const { word, evaluation, rowCount, setSelectRow, disabled } = props;
   const minMaxLen = 1;
   let initChars = { 0: "", 1: "", 2: "", 3: "", 4: "" };
   if (word) {
@@ -11,6 +11,7 @@ export default function WordRow(props) {
   }
   const [inChars, setInChars] = useState(initChars);
 
+  // View method to handle updating row values
   function handleChange(event, key) {
     const letterGuess = event.target.value;
     const updatedRow = {
@@ -21,23 +22,23 @@ export default function WordRow(props) {
     const wordGuess = Object.values(updatedRow).join("");
     setSelectRow(wordGuess);
 
-    // It should not be last input field
+    // Update DOM input focus
     if (key < 4 && letterGuess) {
-      // Get the next input field using it's name
+      // Go to next input box
       const nextInputBox = document.querySelector(
-        `input[name=box-input-${key + 1}-${rowIndex}]`
+        `input[name=box-input-${key + 1}-${rowCount}]`
       );
       if (nextInputBox !== null) {
         nextInputBox.focus();
       }
-    } else if (event.keyCode === 8 || event.keyCode === 46) {
+    } else if (
+      wordGuess.length > 0 &&
+      (event.keyCode === 8 || event.keyCode === 46)
+    ) {
       // Handles delete and backspacing
-      let nextInputBox = null;
-      if (wordGuess.length > 0) {
-        nextInputBox = document.querySelector(
-          `input[name=box-input-${wordGuess.length - 1}-${rowIndex}]`
-        );
-      }
+      const nextInputBox = document.querySelector(
+        `input[name=box-input-${wordGuess.length - 1}-${rowCount}]`
+      );
       if (nextInputBox !== null) {
         nextInputBox.focus();
       }
@@ -46,6 +47,7 @@ export default function WordRow(props) {
     event.preventDefault();
   }
 
+  // View method to generate row input boxes
   function getCharBoxes() {
     const boxList = [];
     for (let i = 0; i < 5; i += 1) {
@@ -53,7 +55,7 @@ export default function WordRow(props) {
       boxList.push(
         <input
           type="text"
-          name={`box-input-${i}-${rowIndex}`}
+          name={`box-input-${i}-${rowCount}`}
           className={`${evaluationClass} box-input`}
           key={`${inChars[i]}-${i}`}
           value={inChars[i]}
@@ -67,6 +69,7 @@ export default function WordRow(props) {
     return boxList;
   }
 
+  // Helper view method to handle delete and backspace keys
   function handleKeyUp(event) {
     if (event.keyCode === 8 || event.keyCode === 46) {
       handleChange(event);
