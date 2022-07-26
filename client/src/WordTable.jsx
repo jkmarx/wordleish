@@ -3,11 +3,11 @@ import WordRow from "./WordRow";
 
 export default function WordTable(props) {
   const { game, solution, updateSessionState } = props;
-  console.log(solution);
   const [selectRow, setSelectRow] = useState("");
   const [rows, setRows] = useState(game.boardState);
 
   function handleSubmit(event) {
+    if (selectRow.length < 5) { return; }
     const tempArr = [
       ...rows.slice(0, game.rowIndex),
       selectRow,
@@ -16,7 +16,6 @@ export default function WordTable(props) {
     setRows(tempArr);
     const solutionMap = {};
     for (let j = 0; j < solution.length; j += 1) {
-      console.log("solution here", solution);
       if (solutionMap.hasOwnProperty(solution[j])) {
         solutionMap[solution[j]] += 1;
       } else {

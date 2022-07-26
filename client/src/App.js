@@ -37,7 +37,7 @@ const App = () => {
     if (gameSession.gameStatus === "WON") {
       return <div className="results">Congrats! You've won today.</div>;
     } else if (gameSession.gameStatus === "LOST") {
-      return <div className="results">Good effort! Try again tomorrow.</div>;
+      return <div className="results">{`Good try: The word is ${gameSession.solution}.`}</div>;
     }
   }
 
