@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 export default function WordRow(props) {
   const { word, evaluation, rowIndex, setSelectRow, disabled } = props;
@@ -13,7 +13,10 @@ export default function WordRow(props) {
 
   function handleChange(event, key) {
     const letterGuess = event.target.value;
-    const updatedRow = { ...inChars, [key]: letterGuess ? letterGuess.toLowerCase() : '' };
+    const updatedRow = {
+      ...inChars,
+      [key]: letterGuess ? letterGuess.toLowerCase() : "",
+    };
     setInChars(updatedRow);
     const wordGuess = Object.values(updatedRow).join("");
     setSelectRow(wordGuess);
@@ -33,9 +36,11 @@ export default function WordRow(props) {
       if (wordGuess.length > 0) {
         nextInputBox = document.querySelector(
           `input[name=box-input-${wordGuess.length - 1}-${rowIndex}]`
-        )
+        );
       }
-      if (nextInputBox !== null) { nextInputBox.focus();}
+      if (nextInputBox !== null) {
+        nextInputBox.focus();
+      }
     }
 
     event.preventDefault();
@@ -74,7 +79,6 @@ export default function WordRow(props) {
       window.removeEventListener("keyup", handleKeyUp);
     };
   }, [inChars]);
-
 
   return <div className="game-row">{getCharBoxes()}</div>;
 }

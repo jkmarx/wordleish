@@ -7,7 +7,9 @@ export default function WordTable(props) {
   const [rows, setRows] = useState(game.boardState);
 
   function handleSubmit(event) {
-    if (selectRow.length < 5) { return; }
+    if (selectRow.length < 5) {
+      return;
+    }
     const tempArr = [
       ...rows.slice(0, game.rowIndex),
       selectRow,
