@@ -1,56 +1,57 @@
 .app-heading {
-    color: red;
+  color: red;
 }
 
 body {
-    position: fixed;
-    left: 50%;
-    font-size: 14px;
+  position: fixed;
+  left: 50%;
+  font-size: 14px;
 }
 
 header {
-    font-size: 2.5rem;
-    padding: 20px 0;
-    color: black;
+  font-size: 2.5rem;
+  padding: 20px 0;
+  color: black;
 }
 
 .game {
-    max-width: 500px;
+  max-width: 500px;
 }
 
 .game-row {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 input[type="text"] {
-    font-size: 2rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
 }
 
 .box-input {
-    width: 62px;
-    height: 62px;
-    margin-right: 7px;
+  width: 62px;
+  height: 62px;
+  margin-right: 7px;
 }
 
 .absent {
-    background-color: #86888a;
-    color: white;
-}
-
-.present {
-    background-color: #c9b458;
-    color: white;
+  background-color: #86888a;
+  color: white;
 }
 
 .correct {
-    background-color: #6aaa64;
-    color: white;
+  background-color: #6aaa64;
+  color: white;
 }
 
-.hidden {
-    visibility: collapse;
-    position: absolute;
+.present {
+  background-color: #c9b458;
+  color: white;
+}
+
+.results {
+  font-size: 2.5rem;
+  color: darkblue;
+  font-weight: bolder;
 }

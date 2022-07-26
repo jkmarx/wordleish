@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server .",
     "build": "Webpack .",
-    "test": "jest"
+    "test": "jest",
+    "format": "npx prettier --write ."
   },
   "author": "Jennifer Marx",
   "license": "ISC",
