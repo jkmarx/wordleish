@@ -23,25 +23,28 @@ export default function WordRow(props) {
     setSelectRow(wordGuess);
 
     // Update DOM input focus
+    let nextInputBox = null;
     if (key < 4 && letterGuess) {
       // Go to next input box
-      const nextInputBox = document.querySelector(
+      nextInputBox = document.querySelector(
         `input[name=box-input-${key + 1}-${rowCount}]`
       );
-      if (nextInputBox !== null) {
-        nextInputBox.focus();
-      }
     } else if (
+      // Go back an input box with delete and backspaces
       wordGuess.length > 0 &&
       (event.keyCode === 8 || event.keyCode === 46)
     ) {
-      // Handles delete and backspacing
-      const nextInputBox = document.querySelector(
+      nextInputBox = document.querySelector(
         `input[name=box-input-${wordGuess.length - 1}-${rowCount}]`
       );
-      if (nextInputBox !== null) {
-        nextInputBox.focus();
-      }
+    } else {
+      // Stay put by default. Ex: Backspace on first box.
+      nextInputBox = document.querySelector(
+        `input[name=box-input-${wordGuess.length}-${rowCount}]`
+      );
+    }
+    if (nextInputBox !== null) {
+      nextInputBox.focus();
     }
 
     event.preventDefault();
