@@ -1,14 +1,14 @@
 # wordleish
 A javascript web app which mirrors WORDLE's key features. Users can have six guesses to try and guess the word.
 
-# Browser Support
+## Browser Support
 Best viewed in Chrome v103.0.5060.xxx.
 
 ## Seed database and start api
-In the api directory, run ```npm start```
+In a terminal window, navigte to the api directory, run ```npm start```
 
 ## Start UI
-In the client directory, run ```npm start```
+In separate terminal window, navigate to the client directory, and run ```npm start```
 
 ## Technologies
 React on the client side.
