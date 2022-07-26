@@ -1,29 +1,56 @@
-import React, { useEffect, useState } from "react";
-import WordTable from "./WordTable";
-import "./styles.css";
+import React, { useEffect, useState } from 'react';
+import WordTable from './WordTable';
+import './styles.css';
 
 const App = () =>{
-  let initGameSession = {
-      boardState: ['', '', '', '', ''],
-      evaluations: [null, null, null, null, null],
+  const [gameSession, setGameSession] = useState({});
+
+  function updateWindowSession (todaysSolution) {
+    let initGameSession = {
+      boardState: ['', '', '', '', '', ''],
+      evaluations: [null, null, null, null, null, null],
       rowIndex: 0,
-      gameStatus: "IN_PROGRESS",
+      gameStatus: 'IN_PROGRESS',
+      solution: todaysSolution
     };
 
-  const stringWordSession = window.localStorage.getItem('wordleish');
-  if (!stringWordSession) { // wordSession
-    window.localStorage.setItem('wordleish', JSON.stringify(initGameSession));
-  } else {
-    initGameSession = JSON.parse(stringWordSession);
+    const stringWordSession = window.localStorage.getItem('wordleish');
+    if (!stringWordSession) {
+      window.localStorage.setItem('wordleish', JSON.stringify(initGameSession));
+    } else {
+      const parsedSession = JSON.parse(stringWordSession);
+      if (parsedSession.solution === todaysSolution) {
+        initGameSession = parsedSession;
+      }
+      window.localStorage.setItem('wordleish', JSON.stringify(initGameSession));
+    }
+    setGameSession(initGameSession);
   }
 
-  const [gameSession, setGameSession] = useState(initGameSession);
-  const [solution, setSolution] = useState(solution);
-
   function updateSessionState(updatedSession) {
-    window.localStorage.setItem('wordleish', JSON.stringify(updatedSession));
-    console.log('updated session', updatedSession);
-    setGameSession(updatedSession);
+    const mergeSessions = { ...gameSession, ...updatedSession };
+    window.localStorage.setItem('wordleish', JSON.stringify(mergeSessions));
+    setGameSession(mergeSessions);
+  }
+
+  function getGameResults() {
+    if (gameSession.gameStatus === "WON") {
+      return (
+        <div>
+          <h2>
+            Congrats! You've won today.
+          </h2>
+        </div>
+      )
+    } else if (gameSession.gameStatus === "LOST") {
+      return (
+        <div>
+          <h2>
+            Good effort! Try again tomorrow.
+          </h2>
+        </div>
+      )
+    }
   }
 
   useEffect(() => {
@@ -31,7 +58,7 @@ const App = () =>{
       .then(res => res.json())
       .then(
         (result) => {
-          setSolution(result.data);
+          updateWindowSession(result.data);
         },
         (error) => {
           console.error(error);
@@ -45,12 +72,14 @@ const App = () =>{
         Wordleish
       </header>
 
-      { gameSession && solution &&
+      { gameSession && gameSession.solution &&
         <WordTable
           game={gameSession}
-          solution={solution}
+          solution={gameSession.solution}
           updateSessionState={ updateSessionState }
         /> }
+
+      { gameSession && gameSession.gameStatus && getGameResults()}
     </div>
   )
 }
