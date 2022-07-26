@@ -1,4 +1,4 @@
-// Create express app
+// Application API to retrieve daily word solution.
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -17,8 +17,10 @@ app.get("/api/v1/word", (req, res, next) => {
   const currentDateStr = `${currentDate.getFullYear()}-${currentDate.getMonth()}-${currentDate.getDate()}`;
   const todayWordSql = `SELECT * FROM wordList WHERE date_last_used = "${currentDateStr}"`;
 
+  // Retrieve today's word.
   db.get(todayWordSql, [], (err, todayWordRow) => {
     if (!todayWordRow) {
+      // Retrieve a random new word which hasn't been used previously
       const randWordSql =
         "SELECT * FROM wordList WHERE date_last_used IS NULL ORDER BY RANDOM() LIMIT 1";
       db.get(randWordSql, [], (err, newWordRow) => {
@@ -26,6 +28,7 @@ app.get("/api/v1/word", (req, res, next) => {
           res.status(400).json({ error: err.message });
           return;
         } else if (newWordRow) {
+          // Update date column to make the word has been used
           db.run(
             "UPDATE wordList SET date_last_used = $todaysDate WHERE id=$id",
             {

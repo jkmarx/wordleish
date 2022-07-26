@@ -1,4 +1,4 @@
-// https://github.com/TryGhost/node-sqlite3
+// Seed a new database with word list parsed from text file.
 const sqlite3 = require("sqlite3").verbose();
 const fs = require("fs");
 
@@ -18,7 +18,7 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
             date_last_used text 
             )`,
       (err) => {
-        if(!err) {
+        if (!err) {
           // Table just created, creating some rows
           seedDatabase();
         }
