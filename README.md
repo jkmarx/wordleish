@@ -1,4 +1,5 @@
 # wordleish
+Quick web app for a take home challenge.
 A javascript web app which mirrors WORDLE's key features. Users can have six guesses to try and guess the word.
 
 ## Browser Support
